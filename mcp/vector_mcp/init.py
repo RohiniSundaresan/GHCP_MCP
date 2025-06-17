@@ -233,21 +233,16 @@ def generate_bdd_from_userstories_no_context(userstories_excel_path: str):
     """
     Generate BDD prompts directly from user stories in an Excel file without using any context.
     Use this function when no context is available or required for retrieval.
+    Prompts for BDD can be used to generate new BDD feature files.
     inputs:
     - userstories_excel_path: Path to the user stories Excel file.
     outputs:
-    - Saves BDD prompts to the specified retrieval directory.
+    - Writes BDD prompts which can be used to generate BDD feature files.
     Steps:
     1. Read user stories from the Excel file.
     2. For each user story, generate a BDD prompt using only the user story description and acceptance criteria.
-    3. Save the generated BDD prompts to the output directory.
+    3. Writes BDD prompts for each use story which can be used to generate BDD feature files.
     """
-    # Set default paths if not provided
-    root_directory = os.path.dirname(userstories_excel_path)
-    retrieval_directory_ = os.path.join(root_directory, "retrieval_context")
-    _ensure_dir(retrieval_directory_)
-    prompts_dir = os.path.join(retrieval_directory_, "Prompts")
-    _ensure_dir(prompts_dir)
 
     # Step 1: Read user stories Excel
     df = pd.read_excel(userstories_excel_path)
@@ -261,17 +256,13 @@ def generate_bdd_from_userstories_no_context(userstories_excel_path: str):
         print(f"Processing User Story {user_story_id}...")
         query = f"{row['Description']} {row.get('FunctionalRequirements', '')} {row['AcceptanceCriteria']} {row.get('Assumptions', '')}"
         
+        # this can be used to generate BDD
         output = get_prompt_template(query, "")
-        timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        output_filename = f"UserStory_{user_story_id}_{timestamp}.txt"
-        output_path = os.path.join(prompts_dir, output_filename)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(output)
-        results.append({"user_story_id": user_story_id, "output_path": output_path})
-        print(f"Generated Prompt for User Story {user_story_id} at {output_path}")
-    print(f"All user stories processed.")
-    print(f"Results: {results}")
 
+        results.append({"user_story_id": user_story_id, "prompt": output})
+
+    return results
+    
 
 @mcp.tool(
     name="generate_bdd_for_user_stories",
@@ -331,33 +322,19 @@ def generate_step_definitions(bdd_or_path: str):
     inputs:
     - bdd_or_path: Path of the feature file or the BDD string itself.
     outputs:
-    - Saves the generated step definitions to a file in the retrieval directory.
-    - Returns the output file path.
+    - Saves the generated step definitions to a file.
     """
-    retrieval_directory_ = None
     bdd_content = None
     # Check if input is a file path
     if os.path.isfile(bdd_or_path):
-        feature_file_path = bdd_or_path
-        retrieval_directory_ = os.path.join(os.path.dirname(feature_file_path), "retrieval_context")
-        with open(feature_file_path, 'r', encoding='utf-8') as f:
+        with open(bdd_or_path, 'r', encoding='utf-8') as f:
             bdd_content = f.read().strip()
     else:
         # Assume input is BDD string
         bdd_content = bdd_or_path.strip()
         # Use a default retrieval directory
-        retrieval_directory_ = os.path.join(os.getcwd(), "retrieval_context")
-    _ensure_dir(retrieval_directory_)
-    prompts_dir = os.path.join(retrieval_directory_, "Prompts")
-    _ensure_dir(prompts_dir)
     output = get_prompt_template_step_def(bdd_content)
-    timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    output_filename = f"StepDefinitions_{timestamp}.txt"
-    output_path = os.path.join(prompts_dir, output_filename)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(output)
-    print(f"Generated Prompt for Step Definitions at {output_path}")
-    return output_path
+    return output
 
 if __name__ == "__main__":
     # test the vector_store function
