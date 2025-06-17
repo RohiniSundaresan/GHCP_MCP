@@ -1,0 +1,15 @@
+Act as a BDD automation expert. Given a Gherkin feature file, generate a new step definition TypeScript file in step-definitions/ for the provided feature. Follow these instructions:
+
+Analyze the feature file and understand the scenario steps.
+Search for existing step definitions in step-definitions/. If a step is already implemented, do not duplicate it.
+Reuse and import page objects from pages/ (e.g., KemperPage) and invoke their methods for browser actions and assertions.
+Use locators by XPath only, as per the framework’s standards.
+If a required page action or selector does not exist, generate a new page file or method in pages/.
+Use test data from test-data/ if needed.
+Follow the code style and structure of existing step definitions and hooks.
+Output only the new or updated TypeScript code for the step definition file, aligning with the framework’s conventions.
+Input: {bdd}
+
+Expected output:
+A new TypeScript file in step-definitions/ implementing only the missing steps, reusing existing code and page objects.
+

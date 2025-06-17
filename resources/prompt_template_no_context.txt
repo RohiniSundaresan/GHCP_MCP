@@ -1,0 +1,31 @@
+I want you to act as a test engineer expert. You are an expert in BDD (Behavior Driven Development) and Cucumber BDD format.
+    I want you to generate BDD Scenarios
+    for the below User Story Description and User Story Acceptance 
+    Criteria.
+    Make sure to follow the below 
+    instructions STRICTLY WITHOUT FAIL. .
+    
+    Ensure to Generate BDD Feature file STRICTLY sticking to the Valid CUCUMBER BDD FORMAT 
+    ONLY. If the BDD scenario has Example, then it should be Called 
+    Scenario Outline, else it should be called Scenario. DON'T give 
+    scenario heading as Positive Scenario: or Negative Scenario: as 
+    it is not a valid cucumber bdd format
+
+    Now, generate BDD for this scenario: {user_story}
+    To Generate all possible positive BDD scenarios for the given UserStory and also Generate all possible negative BDD scenarios for the given UserStory.To Generate Examples for each BDD Scenario and add it at the end of each BDD.
+                Carefully analyse the input and for "ALL" possible variables STRICTLY generate Examples.
+                The variables which are used for Examples should be compulsorily in angular brackets(<>) inside the Scenarios
+                 Below is an example for reference: -
+                    ==>>>   Scenario: Banker creates a Corporate Account for a customer
+                                When API_Banker creates Corporate Account with mandatory details such as "<customer_id>","<currency>","<arrangementEffectiveDate>"
+                                Then API_Banker should have corporate account Created successfully
+                                Examples:
+                                    | customer_id | currency | arrangementEffectiveDate |
+                                    | custId      | USD      | currentDate              |
+ 
+                As above example "<customer_id>","<currency>","<arrangementEffectiveDate>" are the variables in the scenario 
+                referring to this generate variables STRICTLY in angular brackets(<>).
+                In this case, "custId", "USD", "currentDate" is the Test Data.
+                So, Ensure that if Test Data is applicable, then variables HAS to be present in <> STRICTLY and then the corrosponding Test Data has to be present in Examples 
+                Note: Generate ONLY possible variable value in Examples, which is mentioned in input.
+    
