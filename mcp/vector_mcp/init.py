@@ -234,6 +234,7 @@ def generate_bdd_from_userstories_no_context(userstories_excel_path: str):
     Generate BDD prompts directly from user stories in an Excel file without using any context.
     Use this function when no context is available or required for retrieval.
     Prompts for BDD can be used to generate new BDD feature files.
+    Intended for use by copilot agent to write BDD using the prompts and save it to a new feature file.
     inputs:
     - userstories_excel_path: Path to the user stories Excel file.
     outputs:
@@ -242,6 +243,7 @@ def generate_bdd_from_userstories_no_context(userstories_excel_path: str):
     1. Read user stories from the Excel file.
     2. For each user story, generate a BDD prompt using only the user story description and acceptance criteria.
     3. Writes BDD prompts for each use story which can be used to generate BDD feature files.
+    4. Copilot agent can use these prompts to write BDD and save it to a new feature file.
     """
 
     # Step 1: Read user stories Excel
@@ -322,7 +324,7 @@ def generate_step_definitions(bdd_or_path: str):
     inputs:
     - bdd_or_path: Path of the feature file or the BDD string itself.
     outputs:
-    - Saves the generated step definitions to a file.
+    - Copilot agent saves the generated step definitions to a file.
     """
     bdd_content = None
     # Check if input is a file path
